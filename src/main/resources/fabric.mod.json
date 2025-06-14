@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "webcontrol",
+  "version": "1.0.0",
+  "name": "Web Control",
+  "description": "A mod that allows controlling certain aspects of the game through a web interface",
+  "authors": [
+    "Your Name"
+  ],
+  "contact": {
+    "homepage": "https://github.com/yourusername/webcontrol",
+    "sources": "https://github.com/yourusername/webcontrol"
+  },
+  "license": "MIT",
+  "icon": "assets/webcontrol/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.example.webcontrol.WebControlClientMod"
+    ]
+  },
+  "mixins": [
+    "webcontrol.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.0",
+    "fabric-api": "*",
+    "minecraft": "~1.21.1",
+    "java": ">=17"
+  }
+}

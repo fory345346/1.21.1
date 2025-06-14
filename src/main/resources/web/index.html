@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Web Control</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-gamepad"></i> Minecraft Web Control</h1>
+                <p>Advanced coordinate spoofing and game control interface</p>
+            </div>
+            <div class="status-indicator">
+                <span class="status-dot" id="connectionStatus"></span>
+                <span id="statusText">Connected</span>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Coordinate Spoofer Card -->
+            <div class="card featured">
+                <div class="card-header">
+                    <h2><i class="fas fa-map-marker-alt"></i> Coordinate Spoofer</h2>
+                    <div class="card-badge">Simplified</div>
+                </div>
+                
+                <div class="card-body">
+                    <!-- Mode Selection -->
+                    <div class="section">
+                        <label class="section-label">Spoofing Mode</label>
+                        <select id="spoofMode" class="select-input">
+                            <option value="vanilla">🎮 Vanilla (No spoofing)</option>
+                            <option value="offset">⚡ Offset (Simple offset logic)</option>
+                        </select>
+                    </div>
+
+                    <!-- Coordinate Inputs -->
+                    <div class="section">
+                        <label class="section-label">Coordinates</label>
+                        <div class="coord-grid">
+                            <div class="coord-input">
+                                <label>X</label>
+                                <input type="number" id="spoofX" placeholder="0.0" step="0.1">
+                            </div>
+                            <div class="coord-input">
+                                <label>Y</label>
+                                <input type="number" id="spoofY" placeholder="0.0" step="0.1">
+                            </div>
+                            <div class="coord-input">
+                                <label>Z</label>
+                                <input type="number" id="spoofZ" placeholder="0.0" step="0.1">
+                            </div>
+                            <button class="btn btn-primary" id="setSpoofCoords">
+                                <i class="fas fa-check"></i> Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Options -->
+                    <div class="section">
+                        <label class="section-label">Advanced Options</label>
+                        <div class="options-grid">
+                            <label class="toggle-option">
+                                <input type="checkbox" id="animateCoords">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label">🎭 Animate Coordinates</span>
+                            </label>
+                            <label class="toggle-option">
+                                <input type="checkbox" id="obscureRotations">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label">🔄 Obscure Rotations</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Extreme Protection -->
+                    <div class="section">
+                        <label class="section-label">🔒 Extreme Protection</label>
+                        <div class="extreme-protection">
+                            <label class="toggle-option">
+                                <input type="checkbox" id="rapidChangeMode">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label">⚡ Rapid F3 Changes (Unreadable)</span>
+                            </label>
+                            <label class="toggle-option">
+                                <input type="checkbox" id="rapidHudMode">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label">🔄 Rapid HUD Changes (Bottom-left)</span>
+                            </label>
+                            <label class="toggle-option">
+                                <input type="checkbox" id="textReplaceMode">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label">📝 Text Replacement (HUD)</span>
+                            </label>
+                            <label class="toggle-option">
+                                <input type="checkbox" id="noBlockRotation">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label">🧱 No Block Rotation (Anti-tracking)</span>
+                            </label>
+                            <label class="toggle-option">
+                                <input type="checkbox" id="panicQuit">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label">🚨 Panic Quit (Auto-disconnect)</span>
+                            </label>
+                            <label class="toggle-option">
+                                <input type="checkbox" id="visualRange">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label">👁️ Visual Range (Player Detection)</span>
+                            </label>
+                            <div class="visual-range-controls" id="visualRangeControls">
+                                <div class="input-with-button">
+                                    <input type="number" id="visualRangeInput" placeholder="100" min="10" max="500" class="text-input" style="width: 80px;">
+                                    <span class="input-label">blocks</span>
+                                    <button class="btn btn-secondary" id="setVisualRange">Set Range</button>
+                                </div>
+                                <div class="visual-range-status" id="visualRangeStatus">
+                                    <span class="status-text">Players in range: <span id="playersInRange">0</span></span>
+                                </div>
+                            </div>
+                            <div class="text-replacement-controls" id="textReplacementControls">
+                                <div class="input-with-button">
+                                    <input type="text" id="replacementTextInput" placeholder="HIDDEN" class="text-input">
+                                    <button class="btn btn-secondary" id="setReplacementText">
+                                        <i class="fas fa-font"></i> Set Text
+                                    </button>
+                                </div>
+                                <div class="replacement-presets">
+                                    <button class="preset-btn small" data-text="HIDDEN">HIDDEN</button>
+                                    <button class="preset-btn small" data-text="CLASSIFIED">CLASSIFIED</button>
+                                    <button class="preset-btn small" data-text="SECRET">SECRET</button>
+                                    <button class="preset-btn small" data-text="PRIVATE">PRIVATE</button>
+                                    <button class="preset-btn small" data-text="[REDACTED]">[REDACTED]</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Biome Spoofing -->
+                    <div class="section">
+                        <label class="section-label">🌿 Biome Spoofing</label>
+                        <div class="biome-controls">
+                            <div class="input-with-button">
+                                <input type="text" id="biomeSpoofInput" placeholder="minecraft:plains" class="text-input">
+                                <button class="btn btn-secondary" id="setBiomeSpoof">
+                                    <i class="fas fa-leaf"></i> Set
+                                </button>
+                            </div>
+                            <div class="preset-buttons">
+                                <button class="preset-btn" data-biome="minecraft:plains">Plains</button>
+                                <button class="preset-btn" data-biome="minecraft:forest">Forest</button>
+                                <button class="preset-btn" data-biome="minecraft:desert">Desert</button>
+                                <button class="preset-btn" data-biome="minecraft:ocean">Ocean</button>
+                                <button class="preset-btn" data-biome="">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Presets -->
+                    <div class="section">
+                        <label class="section-label">Quick Presets</label>
+                        <div class="preset-grid">
+                            <button class="preset-btn large" data-preset="spawn">
+                                <i class="fas fa-home"></i> Spawn
+                            </button>
+                            <button class="preset-btn large" data-preset="nether">
+                                <i class="fas fa-fire"></i> Nether
+                            </button>
+                            <button class="preset-btn large" data-preset="end">
+                                <i class="fas fa-star"></i> End
+                            </button>
+                            <button class="preset-btn large" data-preset="random">
+                                <i class="fas fa-dice"></i> Random
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Info Panel -->
+                    <div class="info-panel">
+                        <div class="info-item">
+                            <strong>🎮 Vanilla:</strong> Shows real coordinates (no spoofing)
+                        </div>
+                        <div class="info-item">
+                            <strong>⚡ Offset:</strong> Simple offset logic - server→client subtract, client→server add
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Settings Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-cog"></i> Game Settings</h2>
+                </div>
+                <div class="card-body">
+                    <div class="settings-grid">
+                        <div class="setting-item">
+                            <label><i class="fas fa-eye"></i> FOV</label>
+                            <div class="slider-container">
+                                <input type="range" id="fovSlider" min="30" max="110" step="1" value="70">
+                                <span id="fovValue" class="value-display">70</span>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label><i class="fas fa-mountain"></i> Render Distance</label>
+                            <div class="slider-container">
+                                <input type="range" id="renderSlider" min="2" max="32" step="1" value="12">
+                                <span id="renderValue" class="value-display">12</span>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label><i class="fas fa-sun"></i> Brightness</label>
+                            <div class="slider-container">
+                                <input type="range" id="brightnessSlider" min="0" max="100" step="1" value="50">
+                                <span id="brightnessValue" class="value-display">50</span>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label><i class="fas fa-volume-up"></i> Volume</label>
+                            <div class="slider-container">
+                                <input type="range" id="volumeSlider" min="0" max="100" step="1" value="100">
+                                <span id="volumeValue" class="value-display">100</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Server Controls Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-server"></i> Server Controls</h2>
+                </div>
+                <div class="card-body">
+                    <div class="section">
+                        <div class="input-with-buttons">
+                            <input type="text" id="serverAddress" placeholder="play.hypixel.net" class="text-input">
+                            <button class="btn btn-success" id="joinServer">
+                                <i class="fas fa-sign-in-alt"></i> Join
+                            </button>
+                            <button class="btn btn-danger" id="leaveServer">
+                                <i class="fas fa-sign-out-alt"></i> Leave
+                            </button>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <label class="section-label">Quick Connect</label>
+                        <div class="server-grid">
+                            <button class="server-btn" data-server="play.hypixel.net">Hypixel</button>
+                            <button class="server-btn" data-server="2b2t.org">2b2t</button>
+                            <button class="server-btn" data-server="mc.mineplex.com">Mineplex</button>
+                            <button class="server-btn" data-server="play.cubecraft.net">CubeCraft</button>
+                            <button class="server-btn" data-server="localhost">Local</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Player Stats Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-user"></i> Player Stats</h2>
+                    <div class="header-buttons">
+                        <button class="btn btn-small btn-warning" id="toggleCoordsVisibility">
+                            <i class="fas fa-eye"></i> <span id="coordsVisibilityText">Show Coords</span>
+                        </button>
+                        <button class="btn btn-small" id="toggleStatsAutoUpdate">
+                            <i class="fas fa-pause"></i> <span id="autoUpdateText">Real-time: ON</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div class="stat-content">
+                                <div class="stat-label">Position</div>
+                                <div class="stat-value" id="playerPosition">Loading...</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-leaf"></i></div>
+                            <div class="stat-content">
+                                <div class="stat-label">Biome</div>
+                                <div class="stat-value" id="playerBiome">Loading...</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                            <div class="stat-content">
+                                <div class="stat-label">Time</div>
+                                <div class="stat-value" id="gameTime">Loading...</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            <div class="stat-content">
+                                <div class="stat-label">FPS</div>
+                                <div class="stat-value" id="gameFPS">Loading...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <!-- Quick Actions Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+                </div>
+                <div class="card-body">
+                    <div class="actions-grid">
+                        <button class="action-btn" id="toggleF3">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Toggle F3</span>
+                        </button>
+                        <button class="action-btn" id="toggleFullscreen">
+                            <i class="fas fa-expand"></i>
+                            <span>Fullscreen</span>
+                        </button>
+                        <button class="action-btn" id="takeScreenshot">
+                            <i class="fas fa-camera"></i>
+                            <span>Screenshot</span>
+                        </button>
+                        <button class="action-btn" id="togglePause">
+                            <i class="fas fa-pause"></i>
+                            <span>Pause Game</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-content">
+            <i class="fas fa-info-circle" id="toastIcon"></i>
+            <span id="toastMessage"></span>
+        </div>
+        <button class="toast-close" onclick="hideToast()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner">
+                <i class="fas fa-cog fa-spin"></i>
+            </div>
+            <p>Applying changes...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

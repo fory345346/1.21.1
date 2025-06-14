@@ -1,0 +1,14 @@
+{
+  "key.webcontrol.settings": "Open Spoofer Settings",
+  "category.webcontrol.general": "Web Control",
+  "key.webcontrol.toggle_spoof": "Toggle Coordinate Spoofing",
+  "key.webcontrol.regenerate_spoof": "Generate New Offset",
+  "key.webcontrol.open_config": "Open Config",
+  "key.webcontrol.start_recording": "Start Recording",
+  "key.webcontrol.stop_recording": "Stop Recording",
+  "key.webcontrol.show_position": "Show Position",
+  "key.webcontrol.panicquit": "Panic Quit (Shift+Ctrl+P)",
+  "key.webcontrol.open_web_interface": "Open Web Interface (F9)",
+  "category.webcontrol.main": "Web Control",
+  "category.webcontrol": "Web Control"
+}

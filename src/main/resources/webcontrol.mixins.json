@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.example.webcontrol.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "DebugHudMixin",
+    "InGameHudMixin",
+    "ClientConnectionMixin",
+    "accessor.PlayerPositionLookS2CPacketAccessor",
+    "accessor.PlayerMoveC2SPacketAccessor",
+    "accessor.BlockUpdateS2CPacketAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

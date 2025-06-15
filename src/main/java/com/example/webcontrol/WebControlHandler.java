@@ -1,6 +1,6 @@
 package com.example.webcontrol;
 
-import com.example.webcontrol.spoof.CoordSpoofManager;
+import com.example.webcontrol.spoof.TrueRusherHackSpoofer;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -100,7 +100,7 @@ public class WebControlHandler implements HttpHandler {
                         double x = json.get("x").getAsDouble();
                         double y = json.get("y").getAsDouble();
                         double z = json.get("z").getAsDouble();
-                        CoordSpoofManager.setOffset(x, y, z);
+                        TrueRusherHackSpoofer.setOffset(x, y, z);
                         WebControlConfig.getInstance().updateOffset(x, y, z);
                         sendResponse(exchange, "{\"status\":\"success\",\"message\":\"Spoof coordinates set\"}", 200);
                     } else {
@@ -112,8 +112,8 @@ public class WebControlHandler implements HttpHandler {
                     if (json.has("mode")) {
                         String mode = json.get("mode").getAsString().toUpperCase();
                         try {
-                            CoordSpoofManager.SpoofMode spoofMode = CoordSpoofManager.SpoofMode.valueOf(mode);
-                            CoordSpoofManager.setMode(spoofMode);
+                            TrueRusherHackSpoofer.SpoofMode spoofMode = TrueRusherHackSpoofer.SpoofMode.valueOf(mode);
+                            TrueRusherHackSpoofer.setMode(spoofMode);
                             WebControlConfig.getInstance().updateSpoofMode(mode);
                             sendResponse(exchange, "{\"status\":\"success\",\"mode\":\"" + mode.toLowerCase() + "\"}", 200);
                         } catch (IllegalArgumentException e) {
@@ -126,52 +126,27 @@ public class WebControlHandler implements HttpHandler {
 
                 case "spoof/status":
                     JsonObject spoofStatus = new JsonObject();
-                    spoofStatus.addProperty("mode", CoordSpoofManager.getModeString());
-                    spoofStatus.addProperty("offsetX", CoordSpoofManager.getOffsetX());
-                    spoofStatus.addProperty("offsetY", CoordSpoofManager.getOffsetY());
-                    spoofStatus.addProperty("offsetZ", CoordSpoofManager.getOffsetZ());
-                    spoofStatus.addProperty("animateCoords", CoordSpoofManager.isAnimateCoords());
-                    spoofStatus.addProperty("obscureRotations", CoordSpoofManager.isObscureRotations());
-                    spoofStatus.addProperty("spoofedBiome", CoordSpoofManager.getSpoofedBiome());
-                    spoofStatus.addProperty("biomeSpoofingEnabled", CoordSpoofManager.isBiomeSpoofingEnabled());
-                    spoofStatus.addProperty("rapidChangeMode", CoordSpoofManager.isRapidChangeMode());
-                    spoofStatus.addProperty("rapidHudMode", CoordSpoofManager.isRapidHudMode());
-                    spoofStatus.addProperty("textReplaceMode", CoordSpoofManager.isTextReplaceMode());
-                    spoofStatus.addProperty("replacementText", CoordSpoofManager.getReplacementText());
+                    spoofStatus.addProperty("mode", TrueRusherHackSpoofer.getModeString());
+                    spoofStatus.addProperty("offsetX", TrueRusherHackSpoofer.getOffsetX());
+                    spoofStatus.addProperty("offsetY", TrueRusherHackSpoofer.getOffsetY());
+                    spoofStatus.addProperty("offsetZ", TrueRusherHackSpoofer.getOffsetZ());
+                    // Simplified - no complex features
+                    spoofStatus.addProperty("animateCoords", false);
+                    spoofStatus.addProperty("obscureRotations", false);
+                    spoofStatus.addProperty("spoofedBiome", "");
+                    spoofStatus.addProperty("biomeSpoofingEnabled", false);
+                    spoofStatus.addProperty("rapidChangeMode", false);
+                    spoofStatus.addProperty("rapidHudMode", false);
+                    spoofStatus.addProperty("textReplaceMode", false);
+                    spoofStatus.addProperty("replacementText", "");
                     sendResponse(exchange, spoofStatus.toString(), 200);
                     break;
 
+                // Simplified - complex features removed
                 case "spoof/animate":
-                    if (json.has("enabled")) {
-                        boolean enabled = json.get("enabled").getAsBoolean();
-                        CoordSpoofManager.setAnimateCoords(enabled);
-                        WebControlConfig.getInstance().updateAnimateCoords(enabled);
-                        sendResponse(exchange, "{\"status\":\"success\",\"animate\":\"" + enabled + "\"}", 200);
-                    } else {
-                        sendResponse(exchange, "{\"error\":\"Missing enabled parameter\"}", 400);
-                    }
-                    break;
-
                 case "spoof/rotations":
-                    if (json.has("enabled")) {
-                        boolean enabled = json.get("enabled").getAsBoolean();
-                        CoordSpoofManager.setObscureRotations(enabled);
-                        WebControlConfig.getInstance().updateObscureRotations(enabled);
-                        sendResponse(exchange, "{\"status\":\"success\",\"obscureRotations\":\"" + enabled + "\"}", 200);
-                    } else {
-                        sendResponse(exchange, "{\"error\":\"Missing enabled parameter\"}", 400);
-                    }
-                    break;
-
                 case "spoof/biome":
-                    if (json.has("biome")) {
-                        String biome = json.get("biome").getAsString();
-                        CoordSpoofManager.setBiomeSpoof(biome);
-                        WebControlConfig.getInstance().updateBiomeSpoof(biome, !biome.isEmpty());
-                        sendResponse(exchange, "{\"status\":\"success\",\"biome\":\"" + biome + "\"}", 200);
-                    } else {
-                        sendResponse(exchange, "{\"error\":\"Missing biome parameter\"}", 400);
-                    }
+                    sendResponse(exchange, "{\"status\":\"success\",\"message\":\"Feature not available in simple mode\"}", 200);
                     break;
 
                 case "spoof/preset":
@@ -184,50 +159,12 @@ public class WebControlHandler implements HttpHandler {
                     }
                     break;
 
+                // Simplified - complex features removed
                 case "spoof/rapid":
-                    if (json.has("enabled")) {
-                        boolean enabled = json.get("enabled").getAsBoolean();
-                        CoordSpoofManager.setRapidChangeMode(enabled);
-                        WebControlConfig.getInstance().updateRapidChangeMode(enabled);
-                        sendResponse(exchange, "{\"status\":\"success\",\"rapidChange\":\"" + enabled + "\"}", 200);
-                    } else {
-                        sendResponse(exchange, "{\"error\":\"Missing enabled parameter\"}", 400);
-                    }
-                    break;
-
                 case "spoof/rapidhud":
-                    if (json.has("enabled")) {
-                        boolean enabled = json.get("enabled").getAsBoolean();
-                        CoordSpoofManager.setRapidHudMode(enabled);
-                        WebControlConfig.getInstance().updateRapidHudMode(enabled);
-                        sendResponse(exchange, "{\"status\":\"success\",\"rapidHud\":\"" + enabled + "\"}", 200);
-                    } else {
-                        sendResponse(exchange, "{\"error\":\"Missing enabled parameter\"}", 400);
-                    }
-                    break;
-
                 case "spoof/textreplace":
-                    if (json.has("enabled")) {
-                        boolean enabled = json.get("enabled").getAsBoolean();
-                        String currentText = CoordSpoofManager.getReplacementText();
-                        CoordSpoofManager.setTextReplaceMode(enabled);
-                        WebControlConfig.getInstance().updateTextReplaceMode(enabled, currentText);
-                        sendResponse(exchange, "{\"status\":\"success\",\"textReplace\":\"" + enabled + "\"}", 200);
-                    } else {
-                        sendResponse(exchange, "{\"error\":\"Missing enabled parameter\"}", 400);
-                    }
-                    break;
-
                 case "spoof/replacementtext":
-                    if (json.has("text")) {
-                        String text = json.get("text").getAsString();
-                        boolean currentMode = CoordSpoofManager.isTextReplaceMode();
-                        CoordSpoofManager.setReplacementText(text);
-                        WebControlConfig.getInstance().updateTextReplaceMode(currentMode, text);
-                        sendResponse(exchange, "{\"status\":\"success\",\"text\":\"" + text + "\"}", 200);
-                    } else {
-                        sendResponse(exchange, "{\"error\":\"Missing text parameter\"}", 400);
-                    }
+                    sendResponse(exchange, "{\"status\":\"success\",\"message\":\"Feature not available in simple mode\"}", 200);
                     break;
 
                 case "spoof/streamer":

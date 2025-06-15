@@ -7,6 +7,8 @@
     "DebugHudMixin",
     "InGameHudMixin",
     "ClientConnectionMixin",
+    "ClientPlayerEntityMixin",
+    "EntityMixin",
     "accessor.PlayerPositionLookS2CPacketAccessor",
     "accessor.PlayerMoveC2SPacketAccessor",
     "accessor.BlockUpdateS2CPacketAccessor"

@@ -1,7 +1,7 @@
 package com.example.webcontrol;
 
 import com.example.webcontrol.keybinds.KeybindManager;
-import com.example.webcontrol.spoof.CoordSpoofManager;
+import com.example.webcontrol.spoof.TrueRusherHackSpoofer;
 import com.sun.net.httpserver.HttpServer;
 import net.fabricmc.api.ClientModInitializer;
 import java.io.IOException;
@@ -45,10 +45,18 @@ public class WebControlClientMod implements ClientModInitializer {
         // Set up coordinate spoofing with simple offset logic
         // OFFSET mode: server->client subtract, client->server add
         // Example: offset=100 means server coords 150,150 → client sees 50,50
-        CoordSpoofManager.setMode(CoordSpoofManager.SpoofMode.OFFSET);
-        CoordSpoofManager.setOffset(100, 0, 100); // X offset=100, Z offset=100
+        TrueRusherHackSpoofer.setMode(TrueRusherHackSpoofer.SpoofMode.OFFSET);
+        TrueRusherHackSpoofer.setOffset(100, 0, 100); // X offset=100, Z offset=100
+        LOGGER.info("=== TRUE RUSHERHACK SPOOFER INITIALIZED ===");
+        LOGGER.info("LITERALLY modifies packet fields like original RusherHack");
+        LOGGER.info("Receive: coordinates - offset, Send: coordinates + offset");
 
-        LOGGER.info("OFFSET mode enabled: server->client subtract, client->server add (offset X=100, Z=100)");
+        LOGGER.info("=== COORDINATE SPOOFING INITIALIZED ===");
+        LOGGER.info("Mode: OFFSET (like RusherHack plugin)");
+        LOGGER.info("Logic: incoming coordinates -100, outgoing coordinates +100");
+        LOGGER.info("Expected: F3 shows coordinates 100 less than real position");
+        LOGGER.info("Expected: Movement works without teleportation");
+        LOGGER.info("=== SIMPLE APPROACH: Only essential packets ===");
 
         // Apply saved settings from config
         applySavedSettings(config);
